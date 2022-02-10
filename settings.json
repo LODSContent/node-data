@@ -1,0 +1,17 @@
+{
+    "dataPath":"C:\\challenge-files-github\\data",
+    "test1":{
+        "customerNumber":1000000,
+        "state":"NV"
+    },
+    "test2":{
+        "count":110,
+        "element":50,
+        "productCode":"S18_4522"
+    },
+    "test3":{
+        "count":143,
+        "element":50,
+        "totalCost":41016.75
+    }
+}
