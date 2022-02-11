@@ -14,7 +14,7 @@
         "element":50,
         "totalCost":41016.75
     },
-    "user":"student",
+    "user":"root",
     "password":"Passw0rd!",
     "sqlHost":"**SQLHOST**",
     "sqlPort":"**SQLPORT**",
