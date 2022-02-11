@@ -13,5 +13,12 @@
         "count":143,
         "element":50,
         "totalCost":41016.75
-    }
+    },
+    "user":"student",
+    "password":"Passw0rd!",
+    "sqlHost":"**SQLHOST**",
+    "sqlPort":"3306",
+    "mongoHost":"**MONGOHOST**",
+    "mongoPort":"27017",
+    "database":"classicmodels"
 }
