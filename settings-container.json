@@ -17,8 +17,8 @@
     "user":"student",
     "password":"Passw0rd!",
     "sqlHost":"**SQLHOST**",
-    "sqlPort":"3306",
+    "sqlPort":"**SQLPORT**",
     "mongoHost":"**MONGOHOST**",
-    "mongoPort":"27017",
+    "mongoPort":"**MONGOPORT",
     "database":"classicmodels"
 }
