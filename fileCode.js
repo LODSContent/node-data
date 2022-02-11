@@ -15,7 +15,7 @@ async function readProducts(fileName, response) {
         let line = lines[lineNo];
         if (line.trim().length > 0) {
             let productJSON = line.slice(2);
-            product = JSON.parse(productJSON);
+            let product = JSON.parse(productJSON);
             products.push(product);
         }
     }
@@ -26,19 +26,22 @@ async function readProducts(fileName, response) {
 async function generateOrdersReport(path, response) {
     let allFiles = await fs.readdir(path);
     let csvFiles = allFiles.filter(file => file.indexOf('.csv') > -1);
-    let results = []
+    let orders = []
     for (let fileNo in csvFiles) {
-        let contents = await fs.readFile(`${path}\\${csvFiles[fileNo]}`, 'utf8');
-        let lines = contents.split('\n');
-        fileData = [];
-        for (lineNo in lines) {
-            data = lines[lineNo].split(',');
-            fileData.push(data);
+        let data = await fs.readFile(`${path}\\${csvFiles[fileNo]}`, 'utf8');
+        let lines = data.split('\n');
+        let fileData = [];
+        for (let lineNo in lines) {
+            let line = lines[lineNo];
+            let order = line.split(',');
+            fileData.push(order);
         }
-        processed = processMonthlyOrders(fileData);
-        results = results.concat(processed);
+        let filtered = fileData.filter(order => order[2] === 'Shipped');
+        filtered.sort((a, b) => b[4] - a[4]);
+        let sliced = filtered.slice(0, 5);
+        orders = orders.concat(sliced);
     }
-    response(results);
+    response(orders);
 
 }
 
