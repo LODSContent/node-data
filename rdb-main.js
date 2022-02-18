@@ -1,79 +1,23 @@
-const fileData = require("./fileCode");
+const rdbCode = require("./mysqlCode");
 const fs = require("fs");
-const fsp = require('fs').promises;
+const { Console } = require("console");
 var testData = {};
 //Test Code
-function customerCallback(customer) {
 
-    //Test 1: Check for an object
-    let test1 = customer!=null ? 1 : 0;
-    let display1 = test1===1?"Congratulations! You have returned a customer.":"Your code still needs to return a customer.";
-    
-    //Test 2: Check for valid data in the object
-    let test2 = 0;
-    let display2 = "";
-    if(test1) {
-        test2 = customer.customerNumber === testData.test1.customerNumber?1:0;
-        display2 = test2===1 ? "Congratulations! You have returned a customer with the correct customerNumber" : "Your code still needs to return a customer with the correct information.";
-    }
-
-    //Output results
-    console.log(display1);
-    console.log(display2);
-
-    //Output either the score (if scored), or example data.
-    if(testData.score===1) {
-        result = test1 + test2;
-        console.log(`Score: ${result/2}`);
-    } else {
-        console.log(`Here is the customer data\n${JSON.stringify(customer)}`);
-    }
-}
-
-function productsCallback(products) {
-
-    //Test 1: Correct number of elements
-    let test1 = (products != null) && (products.length === testData.test2.count) ? 1: 0;
-    let display1 = test1 ===1 ? `Congratulations! You returned the correct number of products (${testData.test2.count}).` : "You still need to return the correct number of products.";
-
-    //Test 2: Correct data
-    let test2 = (test1===1) && (products[testData.test2.element].productCode===testData.test2.productCode) ? 1: 0;
-    let display2 = test2 === 1 ? "Congratulations! You have returned the correct product data.":"Your code still needs to return the correct product data.";
-
-    //Output test results
-    console.log(display1);
-    console.log(display2);
-
-    if(testData.score) {
-        let result = test1 + test2;
-        console.log(`Score: ${result/2}`);
-    } else {
-        console.log(`Here is a sample product:\n${JSON.stringify(products[testData.test2.element])}`);
-    }
-}
-
-function reportCallback(report) {
-    let test1 = report != null && report.length === testData.test3.count ? 1 : 0;
-    let display1 = test1 === 1 ? `Congratulations! You have returned the correct number of purchase records (${testData.test3.count})` : "You still need to return the correct number of purchase records.";
-    let test2 = (test1 === 1) && (report[testData.test3.element].length>4) && (report[testData.test3.element][4]==testData.test3.totalCost) ? 1 : 0;
-    let display2 = test2 === 1 ? "Congratulations, you have returned the correct data." : "You still need to return the correct data";
-
-    console.log(display1);
-    console.log(display2);
-
-    if(testData.score) {
-        let result = test1 + test2;
-        console.log(`Score: ${result/2}`);
-    } else {
-        console.log(`Here is a sample purchase record:\n${JSON.stringify(report[testData.test3.element])}`);
-    }
-}
 
 fs.readFile('./settings.json', 'utf8', function (err, data) {
     const settings = JSON.parse(data);
-    testData.test1 = settings.test1;
-    testData.test2 = settings.test2;
-    testData.test3 = settings.test3;
+    testData.test2 = settings.relational.test2;
+    testData.test3 = settings.relational.test3;
+    testData.test4 = settings.relational.test4;
+    const host = settings.sqlHost;
+    const user = settings.user;
+    const password = settings.password;
+    const database = settings.database;
+    const customerNumber = testData.test2.customerNumber;
+    const state = testData.test2.state;
+    let cywNumber = 0;
+    let pool = null;
 
     let testNo = 0;
     let score = 0;
@@ -89,20 +33,86 @@ fs.readFile('./settings.json', 'utf8', function (err, data) {
     let fileName = '';
     switch (testNo) {
         case 1:
-            fileName = `${settings.dataPath}/customer.json`;
-            fileData.readCustomer(fileName, customerCallback);
+            testConnection();
             break;
         case 2:
-            fileName = `${settings.dataPath}/products.json`;
-            fileData.readProducts(fileName,productsCallback);
+            pool = rdbCode.getPool(host, user, password, database);
+            try {
+            pool.on('release', processTest2);
+            processTest2();
+            } catch {
+                pool.end();
+            }
             break;
         case 3:
             let filePath = settings.dataPath;
-            fileData.generateOrdersReport(filePath,reportCallback);
+            rdbCode.generateOrdersReport(filePath, reportCallback);
             break;
         default:
             console.log('To run a test, enter:\nnode fileData.js n\nn=1: Process a JSON record\nn=2: Process a file with multiple records\nn=3: Process CSV data');
             break;
+    }
+
+    function testConnection() {
+        const successMessage = "Congratulations! You have connected to the database!";
+        const failMessage = "You still need to connect to the relational database. You will need to successfully connect before continuing wiuth this Challenge Lab.";
+        const errorMessage = "There was an error connecting to the relational database. You will need to successfully connect before continuing wiuth this Challenge Lab.";
+        try {
+            pool = rdbCode.getPool(host, user, password, database);
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    console.log(failMessage);
+                } else {
+                    console.log(successMessage);
+                }
+                pool.end();
+            })
+        } catch { console.log(errorMessage); }
+    }
+
+
+    function processTest2() {
+        cywNumber++;
+        switch (cywNumber) {
+            case 1:
+                rdbCode.retrieveCustomerByNumber(pool, customerNumber, customerByNumberCallback);
+                break;
+            case 2:
+                rdbCode.retrieveCustomerByState(pool, state, customerByStateCallback);
+                break;
+            default:
+                pool.end();
+                break;
+        }
+
+    }
+    function customerByNumberCallback(data) {
+        const successMessage = "Congratulations! You have retrieved a customer by the customer number.";
+        const failMessage = "You still need to retrieve a customer by the customer number.";
+        const errorMessage = failMessage;
+        try {
+            if (data && (data.customerName == testData.test2.customerName) && (data.phone == testData.test2.phone)) {
+                console.log(successMessage);
+                console.log(`Here is the full customer record:\n${JSON.stringify(data)}\n\n`);
+            } else {
+                console.log(failMessage);
+            }
+
+        } catch {
+            console.log(errorMessage);
+        }
+    }
+
+    function customerByStateCallback(data) {
+        const successMessage = "Congratulations! You have retrieved the correct customers by state.";
+        const failMessage = `You still need to retrieve customers by state. You should retrieve ${testData.test2.stateLength} customers with the correct fields.`;
+        const errorMessage = failMessage;
+        if (data && data.length == testData.test2.stateLength && Object.keys(data[0]).length == 4) {
+            console.log(successMessage);
+            console.log(`Here is a sample result:\n${JSON.stringify(data[0])}\n\n`);
+        } else {
+            console.log(`${failMessage}`);
+        }
     }
 
 });

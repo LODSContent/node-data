@@ -28,20 +28,22 @@ async function generateOrdersReport(path, response) {
     let csvFiles = allFiles.filter(file => file.indexOf('.csv') > -1);
     let orders = []
     for (let fileNo in csvFiles) {
-        let data = await fs.readFile(`${path}\\${csvFiles[fileNo]}`, 'utf8');
+        let fileName = csvFiles[fileNo];
+        let filePath = `${path}/${fileName}`;
+        let data = await fs.readFile(filePath, 'utf8');
         let lines = data.split('\n');
         let fileData = [];
         for (let lineNo in lines) {
             let line = lines[lineNo];
             let order = line.split(',');
             fileData.push(order);
-        }
-        let filtered = fileData.filter(order => order[2] === 'Shipped');
-        filtered.sort((a, b) => b[4] - a[4]);
-        let sliced = filtered.slice(0, 5);
-        orders = orders.concat(sliced);
-    }
-    response(orders);
+       }
+       let filtered = fileData.filter(order => order[2] === 'Shipped');
+       filtered.sort((a, b) => b[4] - a[4]);
+       let sliced = filtered.slice(0, 5);
+       orders = orders.concat(sliced);
+  }
+  response(orders);
 
 }
 

@@ -13,5 +13,28 @@
         "count":143,
         "element":50,
         "totalCost":41016.75
-    }
+    },
+    "relational":{
+        "test2":{
+            "customerNumber":129,
+            "state":"CA",
+            "customerName":"Mini Wheels Co.",
+            "phone":"6505555787",
+            "stateLength":11
+        },
+        "test3":{
+
+        },
+        "test4":{
+
+        }
+
+    },
+    "user":"root",
+    "password":"Passw0rd!",
+    "sqlHost":"127.0.0.1",
+    "sqlPort":"3306",
+    "mongoHost":"**MONGOHOST**",
+    "mongoPort":"**MONGOPORT",
+    "database":"classicmodels"
 }
