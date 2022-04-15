@@ -12,6 +12,7 @@ fs.readFile('./settings.json', 'utf8', function (err, data) {
     testData.test3 = settings.relational.test3;
     testData.test4 = settings.relational.test4;
     const host = settings.sqlHost;
+    const port = settings.sqlPort;
     const user = settings.user;
     const password = settings.password;
     const database = settings.database;
@@ -56,7 +57,7 @@ fs.readFile('./settings.json', 'utf8', function (err, data) {
         const failMessage = "You still need to connect to the relational database. You will need to successfully connect before continuing wiuth this Challenge Lab.";
         const errorMessage = "There was an error connecting to the relational database. You will need to successfully connect before continuing wiuth this Challenge Lab.";
         try {
-            pool = rdbCode.getPool(host, user, password, database);
+            pool = rdbCode.getPool(host, port, user, password, database);
             pool.getConnection((err, connection) => {
                 if (err) {
                     console.log(failMessage);
@@ -69,7 +70,7 @@ fs.readFile('./settings.json', 'utf8', function (err, data) {
     }
 
     function testReadData() {
-        pool = rdbCode.getPool(host, user, password, database);
+        pool = rdbCode.getPool(host, port, user, password, database);
         const status = {
             byNumberRun: false,
             byStateRun: false,
@@ -154,7 +155,7 @@ fs.readFile('./settings.json', 'utf8', function (err, data) {
             intervalCount: 0,
             testNo: 0
         }
-        pool = rdbCode.getPool(host, user, password, database);
+        pool = rdbCode.getPool(host, port, user, password, database);
         const testPool = mysql.createPool({
             connectionLimit: 100,
             host: host,
@@ -284,7 +285,7 @@ fs.readFile('./settings.json', 'utf8', function (err, data) {
             intervalCount: 0,
             testNo: 0
         }
-        pool = rdbCode.getPool(host, user, password, database);
+        pool = rdbCode.getPool(host, port, user, password, database);
         const testPool = mysql.createPool({
             connectionLimit: 100,
             host: host,

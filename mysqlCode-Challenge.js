@@ -1,6 +1,5 @@
-const mysql = require('mysql');
 
-function getPool(host, user, password, database) {
+function getPool(host, port, user, password, database) {
 } 
 
 function retrieveCustomerByNumber(pool, customerNumber, response) {
