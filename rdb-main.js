@@ -159,6 +159,7 @@ fs.readFile('./settings.json', 'utf8', function (err, data) {
         const testPool = mysql.createPool({
             connectionLimit: 100,
             host: host,
+            port: port,
             user: user,
             password: password,
             database: database

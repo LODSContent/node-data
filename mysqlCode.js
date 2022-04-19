@@ -36,8 +36,8 @@ function insertProductLine(pool, productLine, description,response) {
     pool.getConnection((err,connection) => {
         const SQL = "INSERT INTO productlines(productLine,textDescription) VALUES(?,?)";
         connection.query(SQL,[productLine,description],(err,data)=>{
-            const code = (err) ? 1 : 0;
-            response(code);
+            connection.release();
+            response(0);
         });
     })    
 }
@@ -46,7 +46,8 @@ function updateProductLine(pool, productLine, html,response) {
     pool.getConnection((err,connection) => {
         const SQL = "UPDATE productlines SET htmlDescription = ? WHERE productLine = ?";
         connection.query(SQL,[html,productLine],(err,data)=>{
-            response();
+            connection.release();
+            response(data.affectedRows);
         });
     });    
 }
@@ -55,6 +56,7 @@ function deleteProductLine(pool,productLine,response) {
     pool.getConnection((err,connection) => {
         const SQL = "DELETE FROM productlines WHERE productLine = ?";
         connection.query(SQL,[productLine],(err,data)=>{
+            connection.release();
             response();
         });
     });    
