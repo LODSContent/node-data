@@ -1,27 +1,25 @@
 
-function getPool(host, port, user, password, database) {
-} 
-
-function retrieveCustomerByNumber(pool, customerNumber, response) {
+function getPool (host, port, user, password, database) {
 }
 
-function retrieveCustomerByState(pool,state,response) {
+function retrieveCustomerByNumber (pool, customerNumber, response) {
 }
 
-function insertProductLine(pool, productLine, description,response) {
+function retrieveCustomerByState (pool, state, response) {
 }
 
-function updateProductLine(pool, productLine, html,response) {
+function insertProductLine (pool, productLine, description, response) {
 }
 
-function deleteProductLine(pool,productLine,response) {
+function updateProductLine (pool, productLine, html, response) {
 }
 
+function deleteProductLine (pool, productLine, response) {
+}
 
-
-module.exports.getPool = getPool;
-module.exports.retrieveCustomerByNumber = retrieveCustomerByNumber;
-module.exports.retrieveCustomerByState = retrieveCustomerByState;
-module.exports.insertProductLine = insertProductLine;
-module.exports.updateProductLine = updateProductLine;
-module.exports.deleteProductLine = deleteProductLine;
+module.exports.getPool = getPool
+module.exports.retrieveCustomerByNumber = retrieveCustomerByNumber
+module.exports.retrieveCustomerByState = retrieveCustomerByState
+module.exports.insertProductLine = insertProductLine
+module.exports.updateProductLine = updateProductLine
+module.exports.deleteProductLine = deleteProductLine
