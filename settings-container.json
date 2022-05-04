@@ -35,6 +35,7 @@
     "sqlHost":"**SQLHOST**",
     "sqlPort":"**SQLPORT**",
     "mongoHost":"**MONGOHOST**",
-    "mongoPort":"**MONGOPORT",
-    "database":"classicmodels"
+    "mongoPort":"**MONGOPORT**",
+    "database":"classicmodels",
+    "collection":"orders"
 }

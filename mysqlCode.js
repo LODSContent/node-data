@@ -36,7 +36,7 @@ function insertProductLine (pool, productLine, description, response) {
     const SQL = 'INSERT INTO productlines(productLine,textDescription) VALUES(?,?)'
     connection.query(SQL, [productLine, description], (_err, data) => {
       connection.release()
-      response(0)
+      response(_err ? 1 : 0)
     })
   })
 }

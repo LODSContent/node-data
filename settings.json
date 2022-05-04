@@ -1,5 +1,6 @@
 {
-    "dataPath":"C:\\challenge-files-github\\data",
+    "dataPath":"C:\\challenge-files-github\\data\\orders",
+    "ordersPath":"C:\\challenge-files-github\\data\\orders",
     "test1":{
         "customerNumber":1000000,
         "state":"NV"
@@ -34,7 +35,8 @@
     "password":"Passw0rd!",
     "sqlHost":"127.0.0.1",
     "sqlPort":"3306",
-    "mongoHost":"**MONGOHOST**",
-    "mongoPort":"**MONGOPORT",
-    "database":"classicmodels"
+    "mongoHost":"127.0.0.1",
+    "mongoPort":"27017",
+    "database":"classicmodels",
+    "collection":"orders"
 }

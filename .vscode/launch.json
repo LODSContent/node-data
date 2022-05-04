@@ -11,8 +11,8 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\rdb-main.js",
-            "args": ["3"]
+            "program": "${workspaceFolder}\\mongo-main.js",
+            "args": ["2"]
         }
     ]
 }
