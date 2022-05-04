@@ -282,15 +282,14 @@ fs.readFile('./settings.json', 'utf8', function (_err, data) {
   }
 
   async function testDataError (collection) {
-    const successMessage = 'Congratulations! You have connected to the collection!'
-    const failMessage = 'You still need to connect to the MongoDB collection. You will need to successfully connect before continuing wiuth this Challenge Lab.'
-    const errorMessage = 'There was an error connecting to the MongoDB collection. You will need to successfully connect before continuing wiuth this Challenge Lab.'
+    const successMessage = 'Congratulations! You have correctly handled a MongoDB data exception!'
+    const failMessage = 'You still need to correctly handle a MongoDB data exception.'
+    const errorMessage = 'You still need to correctly handle a MongoDB data exception.'
     try {
       await removeCustomerOrders(collection, newCustomerNumber)
       const testData = generateTestData()
       const good = await mongoCode.insertCustomer(collection, testData.customer)
       const bad = await mongoCode.insertCustomer(collection, testData.customer)
-      console.log(bad.name)
       if (score) {
         console.log(good !== null && good.insertedId === newCustomerNumber && bad && bad.name === 'MongoServerError')
       } else {
