@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "mongodb": "^4.5.0",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "syntax-error": "^1.4.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

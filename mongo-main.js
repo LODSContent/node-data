@@ -32,7 +32,7 @@ fs.readFile('./settings.json', 'utf8', function (_err, data) {
   }
 
   async function removeCustomerOrders (collection, customerNumber) {
-    collection.deleteOne({ _id: customerNumber })
+    await collection.deleteOne({ _id: customerNumber })
   }
 
   function generateTestData () {
