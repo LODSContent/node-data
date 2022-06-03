@@ -269,10 +269,11 @@ fs.readFile('./settings.json', 'utf8', function (_err, data) {
       const testData = generateTestData()
       await removeCustomerOrders(collection, newCustomerNumber)
       await mongoCode.insertCustomer(collection, testData.customer)
+      const insertedCustomerOrders = await getCustomerOrders(collection, newCustomerNumber)
       await mongoCode.removeCustomerOrders(collection, newCustomerNumber)
       const customerOrders = await getCustomerOrders(collection, newCustomerNumber)
       if (score) {
-        console.log(customerOrders === null)
+        console.log(insertedCustomerOrders !== null && customerOrders === null)
       } else {
         console.log(customerOrders ? failMessage : successMessage)
       }
@@ -291,9 +292,9 @@ fs.readFile('./settings.json', 'utf8', function (_err, data) {
       const good = await mongoCode.insertCustomer(collection, testData.customer)
       const bad = await mongoCode.insertCustomer(collection, testData.customer)
       if (score) {
-        console.log(good !== null && good.insertedId === newCustomerNumber && bad && bad.name === 'MongoServerError')
+        console.log((good !== null) && (good.insertedId === newCustomerNumber) && (bad !== null) && (bad.name === 'MongoServerError'))
       } else {
-        console.log(good !== null && good.insertedId === newCustomerNumber && bad && bad.name === 'MongoServerError' ? successMessage : failMessage)
+        console.log(good !== null && good.insertedId === newCustomerNumber && bad !== null && bad.name === 'MongoServerError' ? successMessage : failMessage)
       }
     } catch (ex) {
       console.log(score ? 'false' : debug ? ex : errorMessage)

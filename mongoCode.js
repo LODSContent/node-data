@@ -22,8 +22,8 @@ async function loadData (collection, path) {
   const allFiles = await fs.readdir(path)
   const orderFiles = allFiles.filter(file => file.indexOf('.json') > -1)
   const orders = []
-  for (const orderFileNo in orderFiles) {
-    const fileName = orderFiles[orderFileNo]
+  for (const lcv in orderFiles) {
+    const fileName = orderFiles[lcv]
     const filePath = `${path}/${fileName}`
     const fileData = await fs.readFile(filePath)
     const order = JSON.parse(fileData)

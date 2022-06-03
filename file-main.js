@@ -22,7 +22,7 @@ function customerCallback (customer) {
   // Output either the score (if scored), or example data.
   if (testData.score === 1) {
     const result = test1 + test2
-    console.log(`Score: ${result / 2}`)
+    console.log(result === 2)
   } else {
     console.log(`Here is the customer data\n${JSON.stringify(customer)}`)
   }
@@ -73,33 +73,35 @@ fs.readFile('./settings.json', 'utf8', function (_err, data) {
   testData.test3 = settings.test3
 
   let testNo = 0
-  let score = 0
   if ((process.argv.length > 2) && (process.argv[2].match(/[123]/g) !== null)) {
     testNo = parseInt(process.argv[2])
   }
-  if ((process.argv.length > 3) && (process.argv[3].match(/[01]/g) !== null)) {
-    score = parseInt(process.argv[3])
-  }
+  const score = process.argv.includes('score')
+  const debug = process.argv.includes('debug')
 
   testData.score = score
 
   let fileName = ''
   let filePath = ''
-  switch (testNo) {
-    case 1:
-      fileName = `${settings.dataPath}/customer.json`
-      fileData.readCustomer(fileName, customerCallback)
-      break
-    case 2:
-      fileName = `${settings.dataPath}/products.json`
-      fileData.readProducts(fileName, productsCallback)
-      break
-    case 3:
-      filePath = settings.dataPath
-      fileData.generateOrdersReport(filePath, reportCallback)
-      break
-    default:
-      console.log('To run a test, enter:\nnode fileData.js n\nn=1: Process a JSON record\nn=2: Process a file with multiple records\nn=3: Process CSV data')
-      break
+  try {
+    switch (testNo) {
+      case 1:
+        fileName = `${settings.dataPath}/customer.json`
+        fileData.readCustomer(fileName, customerCallback)
+        break
+      case 2:
+        fileName = `${settings.dataPath}/products.json`
+        fileData.readProducts(fileName, productsCallback)
+        break
+      case 3:
+        filePath = settings.dataPath
+        fileData.generateOrdersReport(filePath, reportCallback)
+        break
+      default:
+        console.log('To run a test, enter:\nnode fileData.js n\nn=1: Process a JSON record\nn=2: Process a file with multiple records\nn=3: Process CSV data')
+        break
+    }
+  } catch (ex) {
+    console.log(debug ? ex : `There was an error running this validation. To view the error run node main ${testNo} debug from the console.`)
   }
 })
